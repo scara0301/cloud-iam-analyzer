@@ -73,7 +73,7 @@ jobs:
 
       # DevSecOps gate: fail the pipeline on fixable HIGH/CRITICAL vulnerabilities.
       - name: Trivy gate (fail on HIGH/CRITICAL)
-        uses: aquasecurity/trivy-action@0.28.0
+        uses: aquasecurity/trivy-action@v0.33.1
         with:
           image-ref: ${{ env.IMAGE_NAME }}:ci
           severity: HIGH,CRITICAL
@@ -84,7 +84,7 @@ jobs:
 
       - name: Trivy report (SARIF)
         if: always()
-        uses: aquasecurity/trivy-action@0.28.0
+        uses: aquasecurity/trivy-action@v0.33.1
         with:
           image-ref: ${{ env.IMAGE_NAME }}:ci
           severity: HIGH,CRITICAL,MEDIUM

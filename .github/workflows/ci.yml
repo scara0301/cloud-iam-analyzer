@@ -12,6 +12,7 @@ permissions:
 
 env:
   IMAGE_NAME: ghcr.io/${{ github.repository }}
+  TRIVY_IMAGE: aquasec/trivy:0.75.0
 
 jobs:
   lint-test:
@@ -72,26 +73,24 @@ jobs:
           cache-to: type=gha,mode=max
 
       # DevSecOps gate: fail the pipeline on fixable HIGH/CRITICAL vulnerabilities.
+      # Runs the official, version-pinned Trivy image directly (no third-party action).
       - name: Trivy gate (fail on HIGH/CRITICAL)
-        uses: aquasecurity/trivy-action@v0.33.1
-        with:
-          image-ref: ${{ env.IMAGE_NAME }}:ci
-          severity: HIGH,CRITICAL
-          ignore-unfixed: true
-          vuln-type: os,library
-          exit-code: "1"
-          format: table
+        run: |
+          docker run --rm \
+            -v /var/run/docker.sock:/var/run/docker.sock \
+            ${{ env.TRIVY_IMAGE }} image \
+            --scanners vuln --severity HIGH,CRITICAL --ignore-unfixed \
+            --exit-code 1 "$IMAGE_NAME:ci"
 
       - name: Trivy report (SARIF)
         if: always()
-        uses: aquasecurity/trivy-action@v0.33.1
-        with:
-          image-ref: ${{ env.IMAGE_NAME }}:ci
-          severity: HIGH,CRITICAL,MEDIUM
-          ignore-unfixed: true
-          format: sarif
-          output: trivy-results.sarif
-          exit-code: "0"
+        run: |
+          docker run --rm \
+            -v /var/run/docker.sock:/var/run/docker.sock \
+            -v "$PWD:/work" -w /work \
+            ${{ env.TRIVY_IMAGE }} image \
+            --scanners vuln --severity HIGH,CRITICAL,MEDIUM --ignore-unfixed \
+            --format sarif --output trivy-results.sarif --exit-code 0 "$IMAGE_NAME:ci"
 
       - name: Upload SARIF to code scanning
         if: always() && github.event_name != 'pull_request'

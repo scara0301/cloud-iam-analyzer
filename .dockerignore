@@ -1,0 +1,16 @@
+.git
+.github
+.devcontainer
+.venv
+.pytest_cache
+.omc
+__pycache__
+*.pyc
+tests
+k8s
+Dockerfile
+.dockerignore
+README.md
+requirements-dev.txt
+.flake8
+pyproject.toml

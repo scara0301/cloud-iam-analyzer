@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: iam-analyzer-config
+  labels:
+    app: iam-analyzer
+data:
+  APP_TITLE: "Cloud Security Posture & IAM Analyzer"
+  DEFAULT_CONTAMINATION: "0.03"
+  SAMPLE_SEED: "42"
+  MAX_ROWS: "200000"

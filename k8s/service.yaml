@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: iam-analyzer
+  labels:
+    app: iam-analyzer
+spec:
+  # NodePort works on kind/minikube/Docker Desktop (http://localhost:30501).
+  # Switch to `LoadBalancer` on a cloud cluster.
+  type: NodePort
+  selector:
+    app: iam-analyzer
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
+      nodePort: 30501

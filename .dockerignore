@@ -11,6 +11,8 @@ k8s
 Dockerfile
 .dockerignore
 README.md
+WALKTHROUGH-*.md
+**/AGENTS.md
 requirements-dev.txt
 .flake8
 pyproject.toml

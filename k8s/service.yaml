@@ -5,9 +5,10 @@ metadata:
   labels:
     app: iam-analyzer
 spec:
-  # NodePort works on kind/minikube/Docker Desktop (http://localhost:30501).
-  # Switch to `LoadBalancer` on a cloud cluster.
-  type: NodePort
+  # LoadBalancer is published on http://localhost by Docker Desktop's Kubernetes and gets a
+  # public IP on cloud clusters. Docker Desktop does not publish plain NodePorts to the host;
+  # use `type: NodePort` only with minikube (`minikube service iam-analyzer`) or similar.
+  type: LoadBalancer
   selector:
     app: iam-analyzer
   ports:

@@ -38,8 +38,8 @@ The manifest points at `ghcr.io/scara0301/cloud-iam-analyzer`; change it if you 
 ```bash
 kubectl apply -f k8s/
 kubectl rollout status deployment/iam-analyzer
-# NodePort service -> http://localhost:30501 (Docker Desktop / kind / minikube)
-# or: kubectl port-forward svc/iam-analyzer 8501:80
+# LoadBalancer service -> http://localhost (Docker Desktop Kubernetes)
+# or, on any cluster: kubectl port-forward svc/iam-analyzer 8501:80
 ```
 
 Tunables (`DEFAULT_CONTAMINATION`, `MAX_ROWS`, `APP_TITLE`, `SAMPLE_SEED`) live in
